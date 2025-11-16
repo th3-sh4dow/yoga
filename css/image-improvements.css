@@ -1,0 +1,393 @@
+/*==============================================
+  Image Placement Improvements
+  Enhanced responsive image handling
+===============================================*/
+
+/* ===== Lazy Loading ===== */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
+
+/* ===== Improved Banner Carousel Images ===== */
+.carousel-image {
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    object-fit: cover;
+    object-position: center center;
+}
+
+@media (max-width: 1200px) {
+    .carousel-image {
+        height: 80vh;
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-image {
+        height: 70vh;
+        min-height: 450px;
+        object-position: center 30%;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-image {
+        height: 60vh;
+        min-height: 400px;
+    }
+}
+
+/* ===== Services Section Images ===== */
+.services figure img {
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    max-height: 690px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+@media (max-width: 1440px) {
+    .services figure img {
+        min-height: 350px;
+        max-height: 600px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .services figure img {
+        min-height: 300px;
+        max-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .services figure img {
+        min-height: 250px;
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .services figure img {
+        min-height: 200px;
+        max-height: 300px;
+    }
+}
+
+/* ===== Section 4 Image Grid ===== */
+.section-4 .right-part figure img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-4 .right-part figure img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .section-4 .right-part figure img {
+        height: 200px;
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-4 .right-part figure img {
+        height: 180px;
+    }
+}
+
+/* ===== Main Section 4 Side Image ===== */
+.section-4 > .container-fluid > .row > .col-md-3 figure img {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (max-width: 991px) {
+    .section-4 > .container-fluid > .row > .col-md-3 figure img {
+        min-height: 400px;
+        max-height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-4 > .container-fluid > .row > .col-md-3 figure img {
+        min-height: 300px;
+        max-height: 500px;
+    }
+}
+
+/* ===== Gallery Page Images ===== */
+.gallery-item {
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+}
+
+.gallery-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+@media (max-width: 1200px) {
+    .gallery-item img {
+        height: 260px;
+    }
+}
+
+@media (max-width: 992px) {
+    .gallery-item img {
+        height: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-item img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-item img {
+        height: 200px;
+    }
+}
+
+/* ===== Aspect Ratio Containers ===== */
+.image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image-container.ratio-16-9 {
+    padding-bottom: 56.25%;
+}
+
+.image-container.ratio-4-3 {
+    padding-bottom: 75%;
+}
+
+.image-container.ratio-1-1 {
+    padding-bottom: 100%;
+}
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ===== Figure Element Improvements ===== */
+figure {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+figure img {
+    display: block;
+    width: 100%;
+    transition: transform 0.4s ease;
+}
+
+figure:hover img {
+    transform: scale(1.08);
+}
+
+/* ===== Blog Section Images ===== */
+.blog figure img,
+.blog-page figure img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog figure:hover img,
+.blog-page figure:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 992px) {
+    .blog figure img,
+    .blog-page figure img {
+        height: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .blog figure img,
+    .blog-page figure img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog figure img,
+    .blog-page figure img {
+        height: 180px;
+    }
+}
+
+/* ===== Image Loading Animation ===== */
+@keyframes imageLoad {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+img.fade-in {
+    animation: imageLoad 0.5s ease-in-out;
+}
+
+/* ===== Responsive Image Grid ===== */
+.image-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (max-width: 768px) {
+    .image-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* ===== Image Caption Overlay ===== */
+.image-with-caption {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.image-with-caption img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.image-with-caption .caption-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    color: white;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.image-with-caption:hover .caption-overlay {
+    transform: translateY(0);
+}
+
+.image-with-caption:hover img {
+    transform: scale(1.05);
+}
+
+/* ===== Prevent Layout Shift ===== */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+img:not([width]):not([height]) {
+    aspect-ratio: attr(width) / attr(height);
+}
+
+/* ===== Improved Gradient Overlays ===== */
+.services .gradient,
+.section-4 .gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(91,161,122,0.2) 0%, rgba(74,140,106,0.1) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== About Section Circle Images ===== */
+.about .circle {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 768px) {
+    .about .circle {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about .circle {
+        max-width: 250px;
+    }
+}
+
+/* ===== Performance Optimization ===== */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+@supports (content-visibility: auto) {
+    img {
+        content-visibility: auto;
+    }
+}

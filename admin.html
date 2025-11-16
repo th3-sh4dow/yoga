@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Admin Panel - Natureland–YogChetna</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link
+        href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800|Old+Standard+TT:400,400i,700"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"><link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/overflow-fixes.css">
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3NWR31YH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HQ3NWR31YH');
+</script>
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 50px 0;
+        }
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .offer-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .offer-item.active {
+            border-color: #5ba17a;
+            background: #f0f8f4;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+        }
+        .toggle-btn {
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 15px;
+            font-size: 12px;
+        }
+        .toggle-btn.inactive {
+            background: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <div class="container">
+            <!-- Login Section -->
+            <div id="loginSection" class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="login-card">
+                        <div class="text-center mb-4">
+                            <img src="images/nav-logo.png" alt="logo" style="max-width: 80px;">
+                            <h3 style="color: #5ba17a; margin-top: 20px;">Admin Panel</h3>
+                            <p style="color: #000;">Enter secret code to access</p>
+                        </div>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="secretCode" style="color: #5ba17a; font-weight: 600;">Secret Code</label>
+                                <input type="password" class="form-control" id="secretCode" placeholder="Enter secret code" style="border: 2px solid #e9ecef; border-radius: 10px; padding: 15px;">
+                            </div>
+                            <button type="submit" class="btn btn-block" style="background: #5ba17a; color: white; border: none; border-radius: 10px; padding: 15px; font-weight: 600;">Access Admin Panel</button>
+                        </form>
+                        <div id="loginError" class="alert alert-danger mt-3" style="display: none;">
+                            Invalid secret code. Please try again.
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="index.html" style="color: #5ba17a;">← Back to Website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Panel Section -->
+            <div id="adminPanel" style="display: none;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="admin-panel">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style="color: #5ba17a; margin: 0;">
+                                    <i class="fa fa-cog"></i> Admin Panel
+                                </h2>
+                                <div>
+                                    <a href="index.html" class="btn btn-outline-secondary mr-2">View Website</a>
+                                    <button onclick="logout()" class="btn btn-danger">Logout</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Tabs -->
+                            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="offers-tab" data-toggle="tab" href="#offers" role="tab">
+                                        <i class="fa fa-percent"></i> Manage Offers
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="announcements-tab" data-toggle="tab" href="#announcements" role="tab">
+                                        <i class="fa fa-bullhorn"></i> Announcements
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="adminTabContent" style="padding: 30px 0;">
+                                <!-- Offers Tab -->
+                                <div class="tab-pane fade show active" id="offers" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 style="color: #5ba17a;">Add New Offer</h4>
+                                            <form id="offerForm">
+                                                <div class="form-group">
+                                                    <label>Offer Title</label>
+                                                    <input type="text" class="form-control" id="offerTitle" placeholder="e.g., Early Bird Discount">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Offer Description</label>
+                                                    <textarea class="form-control" id="offerDescription" rows="3" placeholder="Describe the offer details"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Discount Percentage</label>
+                                                    <input type="number" class="form-control" id="offerDiscount" placeholder="25" min="0" max="100">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Valid Until</label>
+                                                    <input type="date" class="form-control" id="offerExpiry">
+                                                </div>
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fa fa-plus"></i> Add Offer
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 style="color: #5ba17a;">Current Offers</h4>
+                                            <div id="offersList">
+                                                <!-- Offers will be loaded here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Announcements Tab -->
+                                <div class="tab-pane fade" id="announcements" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 style="color: #5ba17a;">Add New Announcement</h4>
+                                            <form id="announcementForm">
+                                                <div class="form-group">
+                                                    <label>Announcement Title</label>
+                                                    <input type="text" class="form-control" id="announcementTitle" placeholder="e.g., New Online Courses">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Announcement Text</label>
+                                                    <textarea class="form-control" id="announcementText" rows="3" placeholder="Enter announcement details"></textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Priority</label>
+                                                    <select class="form-control" id="announcementPriority">
+                                                        <option value="normal">Normal</option>
+                                                        <option value="high">High Priority</option>
+                                                        <option value="urgent">Urgent</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fa fa-plus"></i> Add Announcement
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 style="color: #5ba17a;">Current Announcements</h4>
+                                            <div id="announcementsList">
+                                                <!-- Announcements will be loaded here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+        // Secret code for admin access
+        const SECRET_CODE = 'yoga2024';
+        
+        // Initialize admin panel
+        $(document).ready(function() {
+            loadOffers();
+            loadAnnouncements();
+        });
+
+        // Login functionality
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            const enteredCode = $('#secretCode').val();
+            
+            if (enteredCode === SECRET_CODE) {
+                $('#loginSection').hide();
+                $('#adminPanel').show();
+                $('#loginError').hide();
+            } else {
+                $('#loginError').show();
+                $('#secretCode').val('');
+            }
+        });
+
+        // Logout functionality
+        function logout() {
+            $('#adminPanel').hide();
+            $('#loginSection').show();
+            $('#secretCode').val('');
+            $('#loginError').hide();
+        }
+
+        // Offer management
+        $('#offerForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const offer = {
+                id: Date.now(),
+                title: $('#offerTitle').val(),
+                description: $('#offerDescription').val(),
+                discount: $('#offerDiscount').val(),
+                expiry: $('#offerExpiry').val(),
+                active: true,
+                created: new Date().toLocaleDateString()
+            };
+            
+            if (offer.title && offer.description) {
+                saveOffer(offer);
+                $('#offerForm')[0].reset();
+                loadOffers();
+                alert('Offer added successfully!');
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Announcement management
+        $('#announcementForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const announcement = {
+                id: Date.now(),
+                title: $('#announcementTitle').val(),
+                text: $('#announcementText').val(),
+                priority: $('#announcementPriority').val(),
+                active: true,
+                created: new Date().toLocaleDateString()
+            };
+            
+            if (announcement.title && announcement.text) {
+                saveAnnouncement(announcement);
+                $('#announcementForm')[0].reset();
+                loadAnnouncements();
+                alert('Announcement added successfully!');
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Local storage functions
+        function saveOffer(offer) {
+            let offers = JSON.parse(localStorage.getItem('yogaOffers') || '[]');
+            offers.push(offer);
+            localStorage.setItem('yogaOffers', JSON.stringify(offers));
+        }
+
+        function saveAnnouncement(announcement) {
+            let announcements = JSON.parse(localStorage.getItem('yogaAnnouncements') || '[]');
+            announcements.push(announcement);
+            localStorage.setItem('yogaAnnouncements', JSON.stringify(announcements));
+        }
+
+        function loadOffers() {
+            const offers = JSON.parse(localStorage.getItem('yogaOffers') || '[]');
+            let html = '';
+            
+            if (offers.length === 0) {
+                html = '<p style="color: #666; text-align: center; padding: 20px;">No offers created yet.</p>';
+            } else {
+                offers.forEach(offer => {
+                    html += `
+                        <div class="offer-item ${offer.active ? 'active' : ''}">
+                            <button class="delete-btn" onclick="deleteOffer(${offer.id})" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="toggle-btn ${!offer.active ? 'inactive' : ''}" onclick="toggleOffer(${offer.id})" title="Toggle Active">
+                                ${offer.active ? 'Active' : 'Inactive'}
+                            </button>
+                            <h5 style="color: #5ba17a; margin-bottom: 10px;">${offer.title}</h5>
+                            <p style="margin-bottom: 10px;">${offer.description}</p>
+                            <div style="font-size: 14px; color: #666;">
+                                <strong>Discount:</strong> ${offer.discount}% | 
+                                <strong>Valid Until:</strong> ${offer.expiry} | 
+                                <strong>Created:</strong> ${offer.created}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            $('#offersList').html(html);
+        }
+
+        function loadAnnouncements() {
+            const announcements = JSON.parse(localStorage.getItem('yogaAnnouncements') || '[]');
+            let html = '';
+            
+            if (announcements.length === 0) {
+                html = '<p style="color: #666; text-align: center; padding: 20px;">No announcements created yet.</p>';
+            } else {
+                announcements.forEach(announcement => {
+                    const priorityColor = announcement.priority === 'urgent' ? '#dc3545' : 
+                                        announcement.priority === 'high' ? '#fd7e14' : '#28a745';
+                    
+                    html += `
+                        <div class="offer-item ${announcement.active ? 'active' : ''}">
+                            <button class="delete-btn" onclick="deleteAnnouncement(${announcement.id})" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <button class="toggle-btn ${!announcement.active ? 'inactive' : ''}" onclick="toggleAnnouncement(${announcement.id})" title="Toggle Active">
+                                ${announcement.active ? 'Active' : 'Inactive'}
+                            </button>
+                            <h5 style="color: #5ba17a; margin-bottom: 10px;">${announcement.title}</h5>
+                            <p style="margin-bottom: 10px;">${announcement.text}</p>
+                            <div style="font-size: 14px; color: #666;">
+                                <span style="background: ${priorityColor}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px;">
+                                    ${announcement.priority.toUpperCase()}
+                                </span>
+                                <strong style="margin-left: 10px;">Created:</strong> ${announcement.created}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            $('#announcementsList').html(html);
+        }
+
+        // Delete functions
+        function deleteOffer(id) {
+            if (confirm('Are you sure you want to delete this offer?')) {
+                let offers = JSON.parse(localStorage.getItem('yogaOffers') || '[]');
+                offers = offers.filter(offer => offer.id !== id);
+                localStorage.setItem('yogaOffers', JSON.stringify(offers));
+                loadOffers();
+            }
+        }
+
+        function deleteAnnouncement(id) {
+            if (confirm('Are you sure you want to delete this announcement?')) {
+                let announcements = JSON.parse(localStorage.getItem('yogaAnnouncements') || '[]');
+                announcements = announcements.filter(announcement => announcement.id !== id);
+                localStorage.setItem('yogaAnnouncements', JSON.stringify(announcements));
+                loadAnnouncements();
+            }
+        }
+
+        // Toggle functions
+        function toggleOffer(id) {
+            let offers = JSON.parse(localStorage.getItem('yogaOffers') || '[]');
+            const offerIndex = offers.findIndex(offer => offer.id === id);
+            if (offerIndex !== -1) {
+                offers[offerIndex].active = !offers[offerIndex].active;
+                localStorage.setItem('yogaOffers', JSON.stringify(offers));
+                loadOffers();
+            }
+        }
+
+        function toggleAnnouncement(id) {
+            let announcements = JSON.parse(localStorage.getItem('yogaAnnouncements') || '[]');
+            const announcementIndex = announcements.findIndex(announcement => announcement.id === id);
+            if (announcementIndex !== -1) {
+                announcements[announcementIndex].active = !announcements[announcementIndex].active;
+                localStorage.setItem('yogaAnnouncements', JSON.stringify(announcements));
+                loadAnnouncements();
+            }
+        }
+    </script>
+</body>
+
+</html>

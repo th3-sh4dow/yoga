@@ -1,0 +1,121 @@
+/* Overflow Prevention CSS */
+
+/* Global overflow prevention - only for mobile */
+* {
+    box-sizing: border-box;
+}
+
+/* Image responsiveness */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Desktop - Normal behavior */
+@media (min-width: 1025px) {
+    html, body {
+        overflow-x: auto;
+    }
+    
+    .container, .container-fluid {
+        max-width: none;
+        overflow-x: visible;
+    }
+    
+    .section-4, .services, .blog, .blog-page, .blog-page-another {
+        overflow-x: visible;
+    }
+}
+
+/* Tablet - Controlled overflow */
+@media (min-width: 769px) and (max-width: 1024px) {
+    html, body {
+        overflow-x: hidden;
+    }
+    
+    .container, .container-fluid {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .section-4, .services, .blog, .blog-page, .blog-page-another {
+        overflow-x: hidden;
+    }
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+    /* Remove excessive padding that causes overflow */
+    .section-4 p,
+    .services p {
+        padding-right: 0 !important;
+        margin-right: 0;
+    }
+    
+    /* Fix content containers */
+    .blog .inner-content,
+    .blog-page .inner-content,
+    .blog-page-another .inner-content {
+        padding-right: 0 !important;
+        margin-right: 0;
+    }
+    
+    /* Fix section padding */
+    .section-4 .right-part,
+    .services .right-part {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    /* Fix gradient overlays */
+    .section-4 .gradient,
+    .services .gradient {
+        max-width: 100%;
+        right: 0;
+    }
+    
+    /* Fix button containers */
+    .section-4 .btn-primary,
+    .section-4 .btn-secondary {
+        max-width: 45%;
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 425px) {
+    .container-fluid {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    .section-4 .right-part,
+    .services .right-part {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    /* Fix any remaining overflow elements */
+    .section-4 .btn-primary,
+    .section-4 .btn-secondary {
+        max-width: 40%;
+        font-size: 11px;
+        padding: 6px 3px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+    .container-fluid {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+    }
+    
+    .section-4 .btn-primary,
+    .section-4 .btn-secondary {
+        max-width: 35%;
+        font-size: 10px;
+        padding: 5px 2px;
+    }
+}

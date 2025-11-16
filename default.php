@@ -1,0 +1,17 @@
+<?php
+// Redirect to index.html
+header("Location: index.html");
+exit();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url=index.html">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <p>If you are not redirected automatically, <a href="index.html">click here</a>.</p>
+</body>
+</html>
