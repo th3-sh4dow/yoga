@@ -17,6 +17,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"><link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/image-improvements.css">
     <link rel="stylesheet" href="css/overflow-fixes.css">
+    <link rel="stylesheet" href="css/booking-modal.css">
     
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HQ3NWR31YH"></script>
@@ -231,11 +232,8 @@
                             <li>Close proximity to yoga hall and dining area</li>
                         </ul>
                         <div class="booking-section mt-3">
-                            <button class="btn btn-success btn-lg book-now-btn" onclick="bookProgram('Garden Cottage')">
-                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Book Program
-                            </button>
-                            <button class="btn btn-outline-primary ml-2" onclick="getQuote('Garden Cottage')">
-                                <i class="fa fa-whatsapp" aria-hidden="true"></i> WhatsApp Booking
+                            <button class="btn btn-success btn-lg book-now-btn" onclick="openBookingModal()">
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Book Now
                             </button>
                         </div>
                     </div>
@@ -265,11 +263,8 @@
                             <li>Modern amenities while maintaining spiritual ambiance</li>
                         </ul>
                         <div class="booking-section mt-3">
-                            <button class="btn btn-success btn-lg book-now-btn" onclick="bookProgram('Premium Cottage')">
-                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Book Program
-                            </button>
-                            <button class="btn btn-outline-primary ml-2" onclick="getQuote('Premium Cottage')">
-                                <i class="fa fa-whatsapp" aria-hidden="true"></i> WhatsApp Booking
+                            <button class="btn btn-success btn-lg book-now-btn" onclick="openBookingModal()">
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Book Now
                             </button>
                         </div>
                     </div>
@@ -354,275 +349,7 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <!-- Custom JavaScript --><script src="js/custom.js"></script>
-    <!-- Booking Modal -->
-    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingModalLabel">
-                        <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Book Your Retreat
-                    </h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="bookingForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="roomType">Accommodation Type</label>
-                                    <input type="text" class="form-control" id="roomType" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="programType">Program Type</label>
-                                    <select class="form-control" id="programType" required>
-                                        <option value="">Select Program</option>
-                                        <option value="Weekend Wellness Yoga Retreat (Saturday – Sunday)">Weekend Wellness Yoga Retreat (2 Days & 1 Night)</option>
-                                        <option value="3-Day Wellness & Retreat (Friday-Sunday)">3-Day Wellness & Retreat (3 Days & 2 Night)</option>
-                                        <option value="7 Days Yoga & Wellness Detox Retreat (Monday–Sunday)">7 Days Yoga & Wellness Detox Retreat (7 Days & 6 Night)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="pricePerNight">Pricing Information</label>
-                                    <input type="text" class="form-control" id="pricePerNight" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="checkIn">Check-in Date</label>
-                                    <input type="date" class="form-control" id="checkIn" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="checkOut">Check-out Date</label>
-                                    <input type="date" class="form-control" id="checkOut" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="guests">Number of Guests</label>
-                                    <select class="form-control" id="guests" required>
-                                        <option value="">Select guests</option>
-                                        <option value="1">1 Guest</option>
-                                        <option value="2">2 Guests</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="totalAmount">Total Amount</label>
-                                    <input type="text" class="form-control" id="totalAmount" readonly>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="fullName">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="specialRequests">Special Requests (Optional)</label>
-                            <textarea class="form-control" id="specialRequests" rows="3"
-                                placeholder="Any dietary requirements, accessibility needs, or special requests..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" onclick="submitBooking()">
-                        <i class="fa fa-whatsapp" aria-hidden="true"></i> Book via WhatsApp
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="submitBookingEmail()">
-                        <i class="fa fa-envelope" aria-hidden="true"></i> Book via Email
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentBooking = {};
-
-        function bookProgram(accommodationType) {
-            currentBooking = { accommodationType };
-            document.getElementById('roomType').value = accommodationType;
-            document.getElementById('pricePerNight').value = 'Program-based pricing (see table above)';
-
-            // Set minimum date to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('checkIn').min = today;
-            document.getElementById('checkOut').min = today;
-
-            $('#bookingModal').modal('show');
-        }
-
-        function getQuote(accommodationType) {
-            const message = `Hi! I would like to get a quote for ${accommodationType} accommodation at Natureland–YogChetna. Please provide me with details about available programs, pricing, and availability. I'm interested in your wellness retreat programs.`;
-            const whatsappUrl = `https://wa.me/916203517866?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        // Calculate total amount when dates or guests change
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkIn = document.getElementById('checkIn');
-            const checkOut = document.getElementById('checkOut');
-            const guests = document.getElementById('guests');
-
-            function calculateTotal() {
-                const checkInDate = new Date(checkIn.value);
-                const checkOutDate = new Date(checkOut.value);
-                const guestCount = parseInt(guests.value) || 1;
-
-                if (checkIn.value && checkOut.value && checkOutDate > checkInDate) {
-                    const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-                    const total = nights * currentBooking.price * (currentBooking.roomType.includes('Dormitory') ? guestCount : 1);
-                    document.getElementById('totalAmount').value = `₹${total} (${nights} nights)`;
-                } else {
-                    document.getElementById('totalAmount').value = '';
-                }
-            }
-
-            checkIn.addEventListener('change', function () {
-                // Set minimum checkout date to day after checkin
-                const nextDay = new Date(this.value);
-                nextDay.setDate(nextDay.getDate() + 1);
-                checkOut.min = nextDay.toISOString().split('T')[0];
-                calculateTotal();
-            });
-
-            checkOut.addEventListener('change', calculateTotal);
-            guests.addEventListener('change', calculateTotal);
-        });
-
-        function submitBooking() {
-            const form = document.getElementById('bookingForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const formData = {
-                roomType: document.getElementById('roomType').value,
-                checkIn: document.getElementById('checkIn').value,
-                checkOut: document.getElementById('checkOut').value,
-                guests: document.getElementById('guests').value,
-                totalAmount: document.getElementById('totalAmount').value,
-                fullName: document.getElementById('fullName').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                specialRequests: document.getElementById('specialRequests').value
-            };
-
-            const programType = document.getElementById('programType').value;
-            
-            const message = `🏨 *BOOKING REQUEST - Natureland–YogChetna*
-
-📋 *Booking Details:*
-• Accommodation Type: ${formData.roomType}
-• Program: ${programType}
-• Check-in: ${formData.checkIn}
-• Check-out: ${formData.checkOut}
-• Guests: ${formData.guests}
-• Occupancy: ${formData.guests === '1' ? 'Single' : 'Double'}
-
-👤 *Guest Information:*
-• Name: ${formData.fullName}
-• Phone: ${formData.phone}
-• Email: ${formData.email}
-
-📝 *Special Requests:*
-${formData.specialRequests || 'None'}
-
-Please confirm availability and provide pricing details for the selected program. Thank you!`;
-
-            const whatsappUrl = `https://wa.me/916203517866?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-            $('#bookingModal').modal('hide');
-        }
-
-        function submitBookingEmail() {
-            const form = document.getElementById('bookingForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            const formData = {
-                roomType: document.getElementById('roomType').value,
-                checkIn: document.getElementById('checkIn').value,
-                checkOut: document.getElementById('checkOut').value,
-                guests: document.getElementById('guests').value,
-                totalAmount: document.getElementById('totalAmount').value,
-                fullName: document.getElementById('fullName').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                specialRequests: document.getElementById('specialRequests').value
-            };
-
-            const subject = `Booking Request - ${formData.roomType} - ${formData.fullName}`;
-            const body = `Dear Natureland–YogChetna Team,
-
-I would like to make a booking with the following details:
-
-BOOKING DETAILS:
-- Room Type: ${formData.roomType}
-- Check-in Date: ${formData.checkIn}
-- Check-out Date: ${formData.checkOut}
-- Number of Guests: ${formData.guests}
-- Total Amount: ${formData.totalAmount}
-
-GUEST INFORMATION:
-- Full Name: ${formData.fullName}
-- Phone Number: ${formData.phone}
-- Email Address: ${formData.email}
-
-SPECIAL REQUESTS:
-${formData.specialRequests || 'None'}
-
-Please confirm the availability and provide further booking instructions.
-
-Thank you for your time and assistance.
-
-Best regards,
-${formData.fullName}`;
-
-            const mailtoUrl = `mailto:naturelandyogchetna@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoUrl;
-            $('#bookingModal').modal('hide');
-        }
-    </script>div></button>div>""
+    <script src="js/booking-modal.js"></script>
     <script src="js/image-loader.js"></script>
 </body>
 

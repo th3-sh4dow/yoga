@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Management - Natureland YogChetna Admin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .admin-header {
+            background: linear-gradient(135deg, #5ba17a 0%, #4a9268 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #5ba17a;
+        }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #5ba17a;
+        }
+        .bookings-table {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status-refunded {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .filter-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .action-btn {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-view {
+            background: #17a2b8;
+            color: white;
+        }
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #5ba17a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .modal-header {
+            background: #5ba17a;
+            color: white;
+        }
+        .booking-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .booking-detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .detail-value {
+            color: #5ba17a;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1><i class="fa fa-calendar-check-o"></i> Booking Management</h1>
+                    <p class="mb-0">Manage retreat bookings and payments</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="admin.html" class="btn btn-light">
+                        <i class="fa fa-arrow-left"></i> Back to Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalBookings">0</div>
+                    <div>Total Bookings</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="pendingBookings">0</div>
+                    <div>Pending Payments</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="successfulBookings">0</div>
+                    <div>Confirmed Bookings</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="stats-number" id="totalRevenue">₹0</div>
+                    <div>Total Revenue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Filter by Status:</label>
+                    <select id="statusFilter" class="form-control">
+                        <option value="all">All Bookings</option>
+                        <option value="pending">Pending</option>
+                        <option value="success">Confirmed</option>
+                        <option value="failed">Failed</option>
+                        <option value="refunded">Refunded</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Filter by Program:</label>
+                    <select id="programFilter" class="form-control">
+                        <option value="all">All Programs</option>
+                        <option value="Weekend Wellness Yoga Retreat">Weekend Retreat</option>
+                        <option value="3-Day Wellness & Retreat">3-Day Retreat</option>
+                        <option value="7 Days Yoga & Wellness Detox Retreat">7-Day Retreat</option>
+                        <option value="Online Yoga & Meditation Classes">Online Classes</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Date Range:</label>
+                    <input type="date" id="dateFrom" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label>&nbsp;</label>
+                    <input type="date" id="dateTo" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <button onclick="applyFilters()" class="btn btn-primary">
+                        <i class="fa fa-filter"></i> Apply Filters
+                    </button>
+                    <button onclick="exportBookings()" class="btn btn-success">
+                        <i class="fa fa-download"></i> Export CSV
+                    </button>
+                    <button onclick="refreshBookings()" class="btn btn-info">
+                        <i class="fa fa-refresh"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Table -->
+        <div class="bookings-table">
+            <h3><i class="fa fa-list"></i> Recent Bookings</h3>
+            
+            <div class="loading" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Loading bookings...</p>
+            </div>
+
+            <div class="table-responsive" id="bookingsTableContainer" style="display: none;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Guest Name</th>
+                            <th>Program</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody">
+                        <!-- Bookings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="noBookings" style="display: none; text-align: center; padding: 40px;">
+                <i class="fa fa-calendar-times-o" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                <h4>No bookings found</h4>
+                <p>No bookings match your current filters.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Details Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Booking Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" style="color: white;">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="bookingModalBody">
+                    <!-- Booking details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updateBookingStatus()">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Payment Status</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="statusUpdateForm">
+                        <input type="hidden" id="updateBookingId">
+                        <div class="form-group">
+                            <label>Payment Status:</label>
+                            <select id="newStatus" class="form-control" required>
+                                <option value="pending">Pending</option>
+                                <option value="success">Success</option>
+                                <option value="failed">Failed</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Transaction ID:</label>
+                            <input type="text" id="transactionId" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Notes:</label>
+                            <textarea id="statusNotes" class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStatusUpdate()">Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        let allBookings = [];
+        let currentBooking = null;
+
+        $(document).ready(function() {
+            loadBookings();
+            
+            // Set up filter event listeners
+            $('#statusFilter, #programFilter').change(applyFilters);
+            $('#dateFrom, #dateTo').change(applyFilters);
+        });
+
+        async function loadBookings() {
+            try {
+                showLoading();
+                
+                const response = await fetch('booking-system.php?action=get_bookings');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allBookings = result.bookings;
+                    displayBookings(allBookings);
+                    updateStatistics(allBookings);
+                } else {
+                    showError('Failed to load bookings: ' + result.message);
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        function displayBookings(bookings) {
+            const tbody = document.getElementById('bookingsTableBody');
+            const container = document.getElementById('bookingsTableContainer');
+            const noBookings = document.getElementById('noBookings');
+            const loading = document.getElementById('loadingSpinner');
+            
+            loading.style.display = 'none';
+            
+            if (bookings.length === 0) {
+                container.style.display = 'none';
+                noBookings.style.display = 'block';
+                return;
+            }
+            
+            container.style.display = 'block';
+            noBookings.style.display = 'none';
+            
+            tbody.innerHTML = '';
+            
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${booking.booking_id}</strong></td>
+                    <td>${booking.name}</td>
+                    <td>${booking.program}</td>
+                    <td>₹${parseFloat(booking.amount).toLocaleString()}</td>
+                    <td><span class="status-badge status-${booking.payment_status}">${booking.payment_status.toUpperCase()}</span></td>
+                    <td>${new Date(booking.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="action-btn btn-view" onclick="viewBooking('${booking.booking_id}')">
+                            <i class="fa fa-eye"></i> View
+                        </button>
+                        <button class="action-btn btn-edit" onclick="editBookingStatus('${booking.booking_id}')">
+                            <i class="fa fa-edit"></i> Edit
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStatistics(bookings) {
+            const total = bookings.length;
+            const pending = bookings.filter(b => b.payment_status === 'pending').length;
+            const successful = bookings.filter(b => b.payment_status === 'success').length;
+            const revenue = bookings
+                .filter(b => b.payment_status === 'success')
+                .reduce((sum, b) => sum + parseFloat(b.amount), 0);
+            
+            document.getElementById('totalBookings').textContent = total;
+            document.getElementById('pendingBookings').textContent = pending;
+            document.getElementById('successfulBookings').textContent = successful;
+            document.getElementById('totalRevenue').textContent = '₹' + revenue.toLocaleString();
+        }
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const programFilter = document.getElementById('programFilter').value;
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            
+            let filteredBookings = allBookings;
+            
+            if (statusFilter !== 'all') {
+                filteredBookings = filteredBookings.filter(b => b.payment_status === statusFilter);
+            }
+            
+            if (programFilter !== 'all') {
+                filteredBookings = filteredBookings.filter(b => b.program.includes(programFilter));
+            }
+            
+            if (dateFrom) {
+                filteredBookings = filteredBookings.filter(b => 
+                    new Date(b.created_at) >= new Date(dateFrom)
+                );
+            }
+            
+            if (dateTo) {
+                filteredBookings = filteredBookings.filter(b => 
+                    new Date(b.created_at) <= new Date(dateTo + 'T23:59:59')
+                );
+            }
+            
+            displayBookings(filteredBookings);
+            updateStatistics(filteredBookings);
+        }
+
+        function viewBooking(bookingId) {
+            const booking = allBookings.find(b => b.booking_id === bookingId);
+            if (!booking) return;
+            
+            currentBooking = booking;
+            
+            const modalBody = document.getElementById('bookingModalBody');
+            modalBody.innerHTML = `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Booking ID:</span>
+                    <span class="detail-value">${booking.booking_id}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Guest Name:</span>
+                    <span class="detail-value">${booking.name}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value">${booking.email}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Phone:</span>
+                    <span class="detail-value">${booking.phone}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Program:</span>
+                    <span class="detail-value">${booking.program}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Accommodation:</span>
+                    <span class="detail-value">${booking.accommodation}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Occupancy:</span>
+                    <span class="detail-value">${booking.occupancy}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value">₹${parseFloat(booking.amount).toLocaleString()}</span>
+                </div>
+                <div class="booking-detail-row">
+                    <span class="detail-label">Payment Status:</span>
+                    <span class="detail-value">
+                        <span class="status-badge status-${booking.payment_status}">
+                            ${booking.payment_status.toUpperCase()}
+                        </span>
+                    </span>
+                </div>
+                ${booking.transaction_id ? `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Transaction ID:</span>
+                    <span class="detail-value">${booking.transaction_id}</span>
+                </div>
+                ` : ''}
+                ${booking.check_in_date ? `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Check-in Date:</span>
+                    <span class="detail-value">${new Date(booking.check_in_date).toLocaleDateString()}</span>
+                </div>
+                ` : ''}
+                ${booking.check_out_date ? `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Check-out Date:</span>
+                    <span class="detail-value">${new Date(booking.check_out_date).toLocaleDateString()}</span>
+                </div>
+                ` : ''}
+                <div class="booking-detail-row">
+                    <span class="detail-label">Booking Date:</span>
+                    <span class="detail-value">${new Date(booking.created_at).toLocaleString()}</span>
+                </div>
+                ${booking.special_requirements ? `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Special Requirements:</span>
+                    <span class="detail-value">${booking.special_requirements}</span>
+                </div>
+                ` : ''}
+                ${booking.emergency_contact ? `
+                <div class="booking-detail-row">
+                    <span class="detail-label">Emergency Contact:</span>
+                    <span class="detail-value">${booking.emergency_contact}</span>
+                </div>
+                ` : ''}
+            `;
+            
+            $('#bookingModal').modal('show');
+        }
+
+        function editBookingStatus(bookingId) {
+            const booking = allBookings.find(b => b.booking_id === bookingId);
+            if (!booking) return;
+            
+            document.getElementById('updateBookingId').value = bookingId;
+            document.getElementById('newStatus').value = booking.payment_status;
+            document.getElementById('transactionId').value = booking.transaction_id || '';
+            
+            $('#statusModal').modal('show');
+        }
+
+        async function saveStatusUpdate() {
+            const bookingId = document.getElementById('updateBookingId').value;
+            const status = document.getElementById('newStatus').value;
+            const transactionId = document.getElementById('transactionId').value;
+            
+            try {
+                const response = await fetch('booking-system.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'update_payment_status',
+                        booking_id: bookingId,
+                        status: status,
+                        transaction_id: transactionId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    $('#statusModal').modal('hide');
+                    showSuccess('Status updated successfully');
+                    loadBookings(); // Reload bookings
+                } else {
+                    showError('Failed to update status: ' + result.message);
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        function refreshBookings() {
+            loadBookings();
+        }
+
+        function exportBookings() {
+            // Simple CSV export
+            const csv = generateCSV(allBookings);
+            downloadCSV(csv, 'bookings_' + new Date().toISOString().split('T')[0] + '.csv');
+        }
+
+        function generateCSV(bookings) {
+            const headers = ['Booking ID', 'Name', 'Email', 'Phone', 'Program', 'Amount', 'Status', 'Date'];
+            const rows = bookings.map(booking => [
+                booking.booking_id,
+                booking.name,
+                booking.email,
+                booking.phone,
+                booking.program,
+                booking.amount,
+                booking.payment_status,
+                new Date(booking.created_at).toLocaleDateString()
+            ]);
+            
+            return [headers, ...rows].map(row => row.join(',')).join('\n');
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function showLoading() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('bookingsTableContainer').style.display = 'none';
+            document.getElementById('noBookings').style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            alert('Success: ' + message);
+        }
+
+        function showError(message) {
+            alert('Error: ' + message);
+        }
+    </script>
+</body>
+</html>
