@@ -156,16 +156,17 @@
             <p class="lead">Your booking has been confirmed successfully.</p>
             
             <?php
-            // Get booking details from URL parameters or session
-            $booking_id = $_GET['booking_id'] ?? 'N/A';
+            // Get booking details from URL parameters (Cashfree sends these)
+            $booking_id = $_GET['booking_id'] ?? $_GET['order_id'] ?? 'N/A';
             $order_id = $_GET['order_id'] ?? $booking_id;
-            $amount = $_GET['amount'] ?? 'N/A';
-            $transaction_id = $_GET['transaction_id'] ?? $_GET['cf_payment_id'] ?? 'N/A';
+            $amount = $_GET['amount'] ?? $_GET['order_amount'] ?? 'N/A';
+            $transaction_id = $_GET['transaction_id'] ?? $_GET['cf_payment_id'] ?? $_GET['payment_id'] ?? 'N/A';
+            $payment_status = $_GET['payment_status'] ?? $_GET['status'] ?? 'success';
             
             // If we have a booking ID, fetch details from database
             if ($booking_id !== 'N/A') {
                 try {
-                    $pdo = new PDO("mysql:host=localhost;dbname=yoga_retreat_bookings", "root", "");
+                    $pdo = new PDO("mysql:host=mysql.hostinger.in;dbname=u686650017_yoga_retreat", "u686650017_natureyog", "Naturelandyogchetna@mydbsql0987");
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     
                     $stmt = $pdo->prepare("SELECT * FROM bookings WHERE booking_id = ?");

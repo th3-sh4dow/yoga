@@ -9,17 +9,25 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Database configuration
-$host = 'localhost';
-$dbname = 'yoga_retreat_bookings';
-$username = 'root';
-$password = '';
+// Load secure configuration
+require_once 'config.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    Config::validate();
+    $dbConfig = Config::getDatabase();
+} catch (Exception $e) {
+    die(json_encode(['success' => false, 'message' => 'Configuration error: ' . $e->getMessage()]));
+}
+
+try {
+    $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['name']};charset=utf8mb4";
+    $pdo = new PDO($dsn, $dbConfig['user'], $dbConfig['pass'], [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_PERSISTENT => false,
+        PDO::ATTR_EMULATE_PREPARES => false
+    ]);
 } catch(PDOException $e) {
-    die(json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]));
+    die(json_encode(['success' => false, 'message' => 'Database connection failed']));
 }
 
 // Handle different actions
@@ -177,20 +185,26 @@ function generatePaymentLink($amount, $booking_id, $name, $email) {
     // Using Cashfree test URL
     $base_url = "https://payments-test.cashfree.com/forms/sh4dow";
     
+    // Get current domain for return URLs
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+    $base_domain = $protocol . '://' . $host;
+    
     // Add parameters for tracking
     $params = [
         'amount' => $amount,
         'order_id' => $booking_id,
         'customer_name' => $name,
         'customer_email' => $email,
-        'return_url' => 'https://yourwebsite.com/payment-success.php',
-        'notify_url' => 'https://yourwebsite.com/payment-webhook.php'
+        'return_url' => $base_domain . '/payment-return.php',
+        'notify_url' => $base_domain . '/payment-webhook.php'
     ];
     
     return $base_url . '?' . http_build_query($params);
 }
 
 function sendBookingConfirmation($email, $booking_id, $payment_link) {
+    $emailConfig = Config::getEmail();
     $subject = "Booking Confirmation - Natureland YogChetna";
     $message = "
     <html>
@@ -208,13 +222,14 @@ function sendBookingConfirmation($email, $booking_id, $payment_link) {
     
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'From: naturelandyogchetna@gmail.com' . "\r\n";
+    $headers .= 'From: ' . $emailConfig['from_email'] . "\r\n";
     
     mail($email, $subject, $message, $headers);
 }
 
 function sendOwnerNotification($booking_id, $name, $program) {
-    $owner_email = "naturelandyogchetna@gmail.com";
+    $emailConfig = Config::getEmail();
+    $owner_email = $emailConfig['owner_email'];
     $subject = "New Booking Received - $booking_id";
     $message = "
     <html>
@@ -231,12 +246,13 @@ function sendOwnerNotification($booking_id, $name, $program) {
     
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'From: system@naturelandyogchetna.com' . "\r\n";
+    $headers .= 'From: ' . $emailConfig['from_email'] . "\r\n";
     
     mail($owner_email, $subject, $message, $headers);
 }
 
 function sendPaymentSuccessNotification($email, $booking_id, $name) {
+    $emailConfig = Config::getEmail();
     $subject = "Payment Successful - Booking Confirmed";
     $message = "
     <html>
@@ -254,13 +270,14 @@ function sendPaymentSuccessNotification($email, $booking_id, $name) {
     
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'From: naturelandyogchetna@gmail.com' . "\r\n";
+    $headers .= 'From: ' . $emailConfig['from_email'] . "\r\n";
     
     mail($email, $subject, $message, $headers);
 }
 
 function sendOwnerPaymentNotification($booking_id, $name, $program, $status) {
-    $owner_email = "naturelandyogchetna@gmail.com";
+    $emailConfig = Config::getEmail();
+    $owner_email = $emailConfig['owner_email'];
     $subject = "Payment Update - $booking_id";
     $message = "
     <html>
@@ -276,12 +293,13 @@ function sendOwnerPaymentNotification($booking_id, $name, $program, $status) {
     
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'From: system@naturelandyogchetna.com' . "\r\n";
+    $headers .= 'From: ' . $emailConfig['from_email'] . "\r\n";
     
     mail($owner_email, $subject, $message, $headers);
 }
 
 function sendPaymentFailureNotification($email, $booking_id, $name) {
+    $emailConfig = Config::getEmail();
     $subject = "Payment Failed - Please Try Again";
     $message = "
     <html>
@@ -298,7 +316,7 @@ function sendPaymentFailureNotification($email, $booking_id, $name) {
     
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= 'From: naturelandyogchetna@gmail.com' . "\r\n";
+    $headers .= 'From: ' . $emailConfig['from_email'] . "\r\n";
     
     mail($email, $subject, $message, $headers);
 }

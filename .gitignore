@@ -1,0 +1,33 @@
+# Environment files - NEVER commit these
+.env
+.env.local
+.env.production
+.env.staging
+
+# Database credentials
+dbpass
+db_config.php
+
+# Log files
+*.log
+payment_webhook_log*.txt
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Cache files
+cache/
+tmp/

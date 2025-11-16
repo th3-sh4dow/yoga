@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - Natureland YogChetna</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .failed-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        .failed-icon {
+            font-size: 5rem;
+            color: #dc3545;
+            margin-bottom: 30px;
+        }
+        .failed-title {
+            color: #dc3545;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .btn-retry {
+            background: linear-gradient(135deg, #5ba17a 0%, #4a9268 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(91, 161, 122, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+        .btn-contact {
+            background: transparent;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-contact:hover {
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+        }
+        .info-box {
+            background: #f8d7da;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="failed-container">
+        <div class="failed-icon">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        
+        <h1 class="failed-title">Payment Failed</h1>
+        <p class="lead">We couldn't process your payment. Don't worry, your booking is still reserved.</p>
+        
+        <div class="info-box">
+            <h4 style="color: #dc3545; margin-bottom: 20px;"><i class="fa fa-info-circle"></i> What Happened?</h4>
+            <ul style="text-align: left; color: #721c24;">
+                <li>Payment could not be processed by your bank</li>
+                <li>Network connection issue during payment</li>
+                <li>Insufficient funds or card limit reached</li>
+                <li>Payment was cancelled by user</li>
+            </ul>
+        </div>
+        
+        <div class="info-box" style="background: #fff3cd; border-left-color: #ffc107;">
+            <h4 style="color: #856404; margin-bottom: 20px;"><i class="fa fa-clock-o"></i> Your Booking is Reserved</h4>
+            <p style="color: #856404; margin-bottom: 0;">Your booking is held for 24 hours. You can try payment again or contact us for assistance.</p>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <button onclick="history.back()" class="btn-retry">
+                <i class="fa fa-refresh"></i> Try Payment Again
+            </button>
+            <a href="https://wa.me/916203517866" target="_blank" class="btn-contact">
+                <i class="fa fa-whatsapp"></i> Contact Support
+            </a>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <a href="index.html" style="color: #6c757d; text-decoration: none;">
+                <i class="fa fa-home"></i> Back to Home
+            </a>
+        </div>
+        
+        <div style="margin-top: 30px; color: #6c757d;">
+            <p><strong>Need Help?</strong></p>
+            <p>WhatsApp us at <strong>+91-6203517866</strong></p>
+            <p>Email: <strong>naturelandyogchetna@gmail.com</strong></p>
+        </div>
+    </div>
+</body>
+</html>

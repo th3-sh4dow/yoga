@@ -27,31 +27,43 @@ Upload all the new files to your web server:
 - `js/booking-modal.js` - Modal functionality
 - `admin-bookings.html` - Admin panel for managing bookings
 
-### 3. Configuration
+### 3. Secure Configuration Setup
 
-#### Database Configuration
-Edit `booking-system.php` and `payment-webhook.php` to update database credentials:
-```php
-$host = 'localhost';
-$dbname = 'yoga_retreat_bookings';
-$username = 'your_db_username';
-$password = 'your_db_password';
-```
+#### Environment Configuration
+1. Copy the environment template:
+   ```bash
+   cp .env.example .env
+   ```
 
-#### Email Configuration
-Update email settings in `booking-system.php`:
-```php
-$owner_email = "your-email@domain.com";
-```
+2. Edit `.env` file with your actual credentials:
+   ```env
+   # Database Configuration
+   DB_HOST=mysql.hostinger.in
+   DB_NAME=your_database_name
+   DB_USER=your_database_user
+   DB_PASS=your_secure_password
 
-#### Cashfree Configuration
-Update the payment link generation in `booking-system.php`:
-```php
-function generatePaymentLink($amount, $booking_id, $name, $email) {
-    $base_url = "https://payments-test.cashfree.com/forms/YOUR_FORM_ID";
-    // Update with your actual Cashfree form URL
-}
-```
+   # Cashfree Payment Gateway
+   CASHFREE_APP_ID=your_cashfree_app_id
+   CASHFREE_CLIENT_SECRET=your_cashfree_client_secret
+   CASHFREE_PG_SECRET=your_cashfree_pg_secret
+
+   # Environment
+   APP_ENV=production
+
+   # Email Configuration
+   FROM_EMAIL=your_from_email@domain.com
+   OWNER_EMAIL=your_owner_email@domain.com
+   ```
+
+3. **IMPORTANT**: Never commit the `.env` file to version control!
+
+#### Security Features
+- ✅ No hardcoded credentials in code
+- ✅ Environment variable configuration
+- ✅ Automatic configuration validation
+- ✅ Secure credential loading
+- ✅ Protected sensitive files
 
 ### 4. Webhook Setup
 1. In your Cashfree dashboard, set the webhook URL to:
@@ -164,11 +176,24 @@ chmod 755 css/ js/
 
 ## Security Notes
 
-1. **Input Validation**: All user inputs are sanitized
-2. **SQL Injection Protection**: Using prepared statements
-3. **XSS Protection**: HTML escaping for output
-4. **CSRF Protection**: Consider adding CSRF tokens for production
-5. **SSL Required**: Use HTTPS for payment processing
+1. **Secure Configuration**: All credentials stored in environment variables
+2. **Input Validation**: All user inputs are sanitized
+3. **SQL Injection Protection**: Using prepared statements
+4. **XSS Protection**: HTML escaping for output
+5. **CSRF Protection**: Consider adding CSRF tokens for production
+6. **SSL Required**: Use HTTPS for payment processing
+7. **File Protection**: Sensitive files automatically ignored by Git
+8. **Configuration Validation**: Required settings validated on startup
+
+### Security Checklist:
+- [ ] Create `.env` file with production credentials
+- [ ] Ensure `.env` file is not web-accessible
+- [ ] Set proper file permissions (600 for .env)
+- [ ] Use HTTPS for all operations
+- [ ] Regularly rotate API keys and passwords
+- [ ] Monitor logs for suspicious activity
+
+For detailed security information, see `SECURITY.md`.
 
 ## Customization
 

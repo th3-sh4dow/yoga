@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Complete - Natureland YogChetna</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        .success-icon {
+            font-size: 5rem;
+            color: #28a745;
+            margin-bottom: 30px;
+            animation: bounce 1s ease-in-out;
+        }
+        .success-title {
+            color: #5ba17a;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .btn-home {
+            background: linear-gradient(135deg, #5ba17a 0%, #4a9268 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(91, 161, 122, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+        .btn-contact {
+            background: transparent;
+            color: #5ba17a;
+            border: 2px solid #5ba17a;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-contact:hover {
+            background: #5ba17a;
+            color: white;
+            text-decoration: none;
+        }
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            80% { transform: translateY(-10px); }
+        }
+        .info-box {
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #5ba17a;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fa fa-check-circle"></i>
+        </div>
+        
+        <h1 class="success-title">Payment Completed!</h1>
+        <p class="lead">Thank you for your payment. Your booking has been processed.</p>
+        
+        <div class="info-box">
+            <h4 style="color: #5ba17a; margin-bottom: 20px;"><i class="fa fa-info-circle"></i> What's Next?</h4>
+            <ul style="text-align: left; color: #6c757d;">
+                <li>You will receive a confirmation email within 24 hours</li>
+                <li>Our team will contact you 2-3 days before your retreat</li>
+                <li>Please save your payment confirmation for your records</li>
+                <li>Prepare comfortable yoga clothes and personal items</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <a href="index.html" class="btn-home">
+                <i class="fa fa-home"></i> Back to Home
+            </a>
+            <a href="https://wa.me/916203517866" target="_blank" class="btn-contact">
+                <i class="fa fa-whatsapp"></i> Contact Us
+            </a>
+        </div>
+        
+        <div style="margin-top: 40px; color: #6c757d;">
+            <p><strong>Need Help?</strong></p>
+            <p>WhatsApp us at <strong>+91-6203517866</strong></p>
+            <p>Email: <strong>naturelandyogchetna@gmail.com</strong></p>
+        </div>
+    </div>
+    
+    <script>
+        // Get URL parameters to check if we have booking details
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('booking_id') || urlParams.get('order_id');
+        const amount = urlParams.get('amount') || urlParams.get('order_amount');
+        
+        if (bookingId) {
+            // If we have booking details, redirect to the detailed success page
+            window.location.href = `payment-success.php?booking_id=${bookingId}&amount=${amount || ''}`;
+        }
+        
+        // Auto-redirect to home page after 3 minutes
+        setTimeout(function() {
+            if (confirm('Would you like to return to the home page?')) {
+                window.location.href = 'index.html';
+            }
+        }, 180000); // 3 minutes
+    </script>
+</body>
+</html>
